@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <script>
+        const soap = "tewwwwrr,2023-06-17,qwer [ `26.3% ]     :     80g|asdf [ `23.4% ]     :     90g|zxcv [ 400% ]    :    `1896g,SOLID,102,101,100%		90.0g,90 + 110* = 200,2370g,200g,14g,100%(90g),37%,58%,8%,3%,12%,14%,14%,0%,27%,15%,2%,null,null,null,null,null,referee referee referee|RTT\n\
+134,117,148,155,155,107,199,158,114\n\
+Carotino CF-100,레드팜(팜),8,20g,3,C16:0|C18:0|C18:1|C18:2,10%`Babacu Oil,바바수,20,30g,5,C12:0|C14:0|C16:0|C18:0|C18:1,15%`Stearic Acid,스테아린산,32,40g,6,C18:0|C16:1,20%\n\
+Macadamia,마카다미아,10,50g,C16:0|C18:0|C16:1|C18:1|C18:2|C18:3`Borage,보리지,23,60g,C16:0|C18:0|C18:1|C18:2|C18:3";
+
+        const hot = "hot,2023-06-17,hh [ `0.4% ]     :     3g,H.P.,102,101,null,550 + 0* = 550,6988g,550g,94g,141g,80%,21%,4%,73%,1%,2%,0%,0%,5%,14%,2%,10,90,30,18,8,dddddd\n\
+121,355,110,114,107,107,124,155,114\n\
+Evening Primrose,달맞이 꽃,2,100g,14,C16:0|C18:0|C18:1|C18:2|C18:3,18%`Lauric Acid,라우르산,7,20g,4,C12:0,4%`Mango,망고씨,12,30g,4,C16:0|C18:0|C18:1|C18:2|C18:3,5%`Myristic Acid,미리스틴산,17,400g,71,C14:0,73%\n\
+\n\
+\n\
+10%  -  647g,90%  -  5823g,$Ethanol Weight(30%)  :  194g$Glycerine Weight(18%)  :  1258g$Sugar Weight(8%)  :  518g$Water for Sugar  :  4230g$"
+
+        const beauty = "0;0;skin;100;0.1;0.2;0.3;test 10;add 10;tsja 30`fol 40;jfkfkf 10`rp 300;fik 100`fo 30;memo`memo;2023-06-17"
+
+        
+                
+        const DATA_TYPE = {
+            E_NAME : 0,
+            E_DATE : 1,
+            E_ADD : 2,
+            E_TYPE : 3,
+
+            E_LYE_COUNT : 4,
+            E_LYE_PURITY : 5,
+            E_WATER_TEXT : 6,
+            E_TOTAL_WEIGHT : 7,
+
+            E_WEIGHT : 8,
+            E_OIL : 9,
+            E_LYE : 10,
+            E_WATER : 11,
+
+            E_SAT : 12,
+            E_UNSAT : 13,
+
+            E_S0 : 14,
+            E_S1 : 15,
+            E_S2 : 16,
+            E_S3 : 17,
+
+            E_U0 : 18,
+            E_U1 : 19,
+            E_U2 : 20,
+            E_U3 : 21,
+            E_U4 : 22,
+
+            E_PURE : 23,
+            E_SOLVENT : 24,
+            E_ETHANOL : 25,
+            E_GLYCERINE : 26,
+            E_SUGAR : 27,
+            E_MEMO : 28,
+            E_LENGTH : 29
+        }
+
+        let lineArray = soap.split('\n');
+        let line = lineArray[0];
+        let values = []
+        
+        let idx = 0;
+
+        while(line != null){
+            if(idx < 2) {
+                values = line.split(",");
+                for(let j = 0; j < values.length; j++) {
+                    if(idx == 0){
+                        if(j == 2 || j == DATA_TYPE.E_LENGTH) values[j] = values[j].replace('|', '\n');
+                        //sample.setData(j, values[j]);
+                        console.log(j.toString() + "            " + values[j]);
+                    }
+                    /*else{
+                        console.log(values[j] + "       test");
+                        //sample.setWidth_data(j, Integer.parseInt(values[j]));
+                    }*/
+                }
+            } else if(idx < 4) {
+                values = line.split("`");
+                for(let j = 0; j < values.length; j++) {
+                    if(idx == 2) {
+                        //Log.d("RecipeActivity", values[j]);
+                        if(values[j] == null) break;
+                        console.log(j.toString() + "    1      " + values[j]);
+                        //sample.setCards(j, new cardData(values[j]));
+                    } else {
+                        //sample.setArray_Card_Super(values.length);
+                        if(values[j].split(",").length == 1) break;
+                        console.log(j.toString() + "    2      " + values[j]);
+                        //sample.setCards_Super(j, new cardData(values[j].split(",")));
+                    }
+                }
+            } else {
+                values = line.split(",");
+                for(let j = 0; j < values.length; j++) {
+                    /*if(j == values.length - 1) sample.setHot(values[j] + "\n");
+                    else sample.setHot(values[j] + ",");*/
+                    
+                    console.log(j.toString() + "    3      " + values[j]);
+                }
+            }
+
+            idx++;
+            line = lineArray[idx];
+        }
+
+
+
+        class recipeData {
+            constructor() {
+                this.data = new Array(DATA_TYPE.E_LENGTH);
+                this.isHot = false;
+                this.HotData = "";
+                this.width_data = new Array(9);
+            }
+
+            setData(dt, d) {
+                this.data[dt] = d;
+            }
+        }
+    </script>
+</body>
+</html>
